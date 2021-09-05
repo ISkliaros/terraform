@@ -26,6 +26,7 @@ resource "aws_instance" "my_ubuntu" {
     l_name = "Skliarov",
     names = ["Mike", "Peter", "Denis", "Joe", "Will"]
   })
+  /* user_data = templatefile("inst_centos.tpl", {f_name = "Serhii", l_name = "Skliarov", names = ["Mike", "Peter", "Denis", "Joe", "Will"]} */
 }
 
 resource "aws_security_group" "my_webserver" {
