@@ -54,8 +54,8 @@ resource "aws_security_group" "my_webserver" {
 
     ingress {
       description      = "Securuty Group SSH"
-      from_port        = 443
-      to_port          = 443
+      from_port        = 22
+      to_port          = 22
       protocol         = "tcp"
       cidr_blocks      = ["176.36.236.149/32"]
     }
