@@ -10,12 +10,12 @@ provider "aws" {
   region = "eu-west-1"
 }
 
-resource "aws_security_group" "my_webserver" {
+resource "aws_security_group" "dynamic_secgroup" {
   name        = "Dynamic Securuty Group"
-  description = "Allow inbound traffic ports: 22, 80, 443"
+  description = "Allow inbound traffic ports: 22, 80, 443 etc"
   
     dynamic "ingress"{
-      for_each = ["80", "443", "8080", "1541", "9092", "9093"]
+      for_each = ["80", "443", "8080", "8081"]
       content{
         from_port        = ingress.value
         to_port          = ingress.value

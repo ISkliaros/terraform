@@ -9,33 +9,42 @@ provider "aws" {
   region = "eu-west-1"
 }
 
-resource "aws_eip" "my_static_ip" {
-#  instance = aws_instance.my_ubuntu[count.0]
-  instance = aws_instance.my_ubuntu.id
-}
-
-resource "aws_instance" "my_ubuntu" {
-#  count = "1"
-  tags = {
-    name = "My_Ubuntu_WebServer"
-    owner = "SSkliarov"
-  }
+resource "aws_instance" "my_ubuntu_web" {
   ami = "ami-0ec23856b3bad62d3"
   instance_type = "t2.micro"
   vpc_security_group_ids = [aws_security_group.my_webserver.id]
   key_name = "skl_rsa"
-  security_groups = [ "sg_open_traffic" ]
-  user_data = templatefile("inst_centos.tpl", {
-    f_name = "Serhii",
-    l_name = "Skliarov",
-    names = ["Mike", "Peter", "Denis"]
-  })
-
-  lifecycle {
-#    prevent_destroy = true  # Prevent destroy of the server
-#    prevent_changes = ["ami", "user_data"]  # Prevent changes in some parameters
-    create_before_destroy = true
+  tags = {
+    Name = "My_Ubuntu_WebServer"
+    owner = "SSkliarov"
   }
+  depends_on = [aws_instance.my_ubuntu_db, aws_instance.my_ubuntu_app]
+}
+
+resource "aws_instance" "my_ubuntu_app" {
+  ami = "ami-0ec23856b3bad62d3"
+  instance_type = "t2.micro"
+  vpc_security_group_ids = [aws_security_group.my_webserver.id]
+  key_name = "skl_rsa"
+  tags = {
+    Name = "My_Ubuntu_AppServer"
+    owner = "SSkliarov"
+  }
+  depends_on = [
+    aws_instance.my_ubuntu_db
+  ]
+}
+
+resource "aws_instance" "my_ubuntu_db" {
+  ami = "ami-0ec23856b3bad62d3"
+  instance_type = "t2.micro"
+  vpc_security_group_ids = [aws_security_group.my_webserver.id]
+  key_name = "skl_rsa"
+  tags = {
+    Name = "My_Ubuntu_DatabaseServer"
+    owner = "SSkliarov"
+  }
+
 }
 
 resource "aws_security_group" "my_webserver" {

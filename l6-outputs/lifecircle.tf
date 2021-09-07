@@ -9,10 +9,6 @@ provider "aws" {
   region = "eu-west-1"
 }
 
-resource "aws_eip" "my_static_ip" {
-#  instance = aws_instance.my_ubuntu[count.0]
-  instance = aws_instance.my_ubuntu.id
-}
 
 resource "aws_instance" "my_ubuntu" {
 #  count = "1"
@@ -24,12 +20,12 @@ resource "aws_instance" "my_ubuntu" {
   instance_type = "t2.micro"
   vpc_security_group_ids = [aws_security_group.my_webserver.id]
   key_name = "skl_rsa"
-  security_groups = [ "sg_open_traffic" ]
-  user_data = templatefile("inst_centos.tpl", {
+  /* security_groups = [ "sg_open_traffic" ] */
+/*   user_data = templatefile("inst_centos.tpl", {
     f_name = "Serhii",
     l_name = "Skliarov",
     names = ["Mike", "Peter", "Denis"]
-  })
+  }) */
 
   lifecycle {
 #    prevent_destroy = true  # Prevent destroy of the server
