@@ -17,7 +17,7 @@ resource "aws_instance" "my_ubuntu" {
     owner = "SSkliarov"
   }
   ami = "ami-0ec23856b3bad62d3"
-  instance_type = "t3.micro"
+  instance_type = "t2.micro"
   vpc_security_group_ids = [aws_security_group.my_webserver.id]
   key_name = "skl_rsa"
   security_groups = [ "sg_open_traffic" ]
