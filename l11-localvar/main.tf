@@ -20,6 +20,40 @@ data "aws_ami" "latest_amazon_linux" {
   }
 }
 
+data "aws_availability_zones" "available" {
+  state = "available"
+}
+
+resource "aws_elb" "name" {
+  name = "WebELB"
+  availability_zones = data.aws_availability_zones.available.names
+
+  listener {
+    instance_port     = 80
+    instance_protocol = "http"
+    lb_port           = 80
+    lb_protocol       = "http"
+  }
+
+  health_check {
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    timeout             = 3
+    target              = "HTTP:80/"
+    interval            = 30
+  }
+
+  instances                   = [aws_instance.amazon_linux[0].id, aws_instance.amazon_linux[1].id, aws_instance.amazon_linux[2].id] 
+  idle_timeout                = 400
+  connection_draining         = true
+  connection_draining_timeout = 400
+
+  tags = {
+    Name = "web-elb"
+  }
+
+}
+
 resource "aws_instance" "amazon_linux" {
   ami = data.aws_ami.latest_amazon_linux.id
   instance_type = var.instance_type
@@ -27,7 +61,7 @@ resource "aws_instance" "amazon_linux" {
   vpc_security_group_ids = [aws_security_group.dynamic_secgroup.id]
   key_name = var.key_name
   monitoring = var.enable_dital_monitoring
-  
+  user_data = "${file("install_apache.sh")}"
   tags = merge(var.common_tag, {Name = "${var.common_tag["Environment"]} Server WEB"})
 }
 

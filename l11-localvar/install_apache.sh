@@ -2,7 +2,9 @@
 
 yum -y update
 yum -y install httpd
+
 myip=`curl ifconfig.co`
+
 cat <<EOF > /var/www/html/index.html
 <html>
 <body>
@@ -14,5 +16,6 @@ cat <<EOF > /var/www/html/index.html
 </body>
 </html>
 EOF
+
 sudo service httpd start
 chkconfig httpd on
