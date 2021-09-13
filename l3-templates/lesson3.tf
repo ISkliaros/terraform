@@ -19,7 +19,7 @@ resource "aws_instance" "my_ubuntu" {
   ami = "ami-0ec23856b3bad62d3"
   instance_type = "t2.micro"
   vpc_security_group_ids = [aws_security_group.my_webserver.id]
-  key_name = "skl_rsa"
+  key_name = "id_rsa"
   security_groups = [ "sg_open_traffic" ]
   user_data = templatefile("inst_centos.tpl", {
     f_name = "Serhii",
