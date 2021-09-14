@@ -70,6 +70,16 @@ resource "aws_instance" "amazon_linux_web" {
   tags = merge(var.common_tag, {Name = "${var.common_tag["Environment"]} Server WEB"})
 }
 
+resource "aws_instance" "amazon_linux_jenkins" {
+  ami = data.aws_ami.latest_amazon_linux.id
+  instance_type = var.instance_type
+#  count = var.count_instances
+  vpc_security_group_ids = [aws_security_group.dynamic_secgroup.id]
+  key_name = var.key_name
+  monitoring = var.enable_dital_monitoring
+  user_data = "${file("install_slave.sh")}"
+  tags = merge(var.common_tag, {Name = "${var.common_tag["Environment"]} Jenkins server"})
+}
 resource "aws_instance" "amazon_linux_slave" {
   ami = data.aws_ami.latest_amazon_linux.id
   instance_type = var.instance_type
@@ -80,8 +90,6 @@ resource "aws_instance" "amazon_linux_slave" {
   user_data = "${file("install_slave.sh")}"
   tags = merge(var.common_tag, {Name = "${var.common_tag["Environment"]} Jenkins slave/node"})
 }
-
-
 
 #------------------------------------------------------------
 #------------------------------------------------------------
