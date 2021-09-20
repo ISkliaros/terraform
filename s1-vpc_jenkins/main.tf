@@ -56,6 +56,23 @@ resource "aws_internet_gateway" "dev_gw" {
     Name = "dev-gw"
   }
 }
+#------------------ Create route tables -----------------------
+
+
+resource "aws_route_table" "dev_rt" {
+  vpc_id = aws_vpc.dev_vpc.id
+
+  route = [
+    {
+      cidr_block = var.vpc_cidr_block
+      gateway_id = aws_internet_gateway.dev_gw.id
+    }
+  ]
+
+  tags = {
+    Name = "dev_vpc route table"
+  }
+}
 
 #----------------- Create subnet in VPC ----------------------
 
