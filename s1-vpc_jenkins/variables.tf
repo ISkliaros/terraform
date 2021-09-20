@@ -3,6 +3,21 @@ variable "region" {
     default = "eu-west-1"
 }
 
+variable "vpc_cidr_block" {
+    description = "Please set VPC cidr_block"
+    default = "10.0.0.0/16"
+}
+
+variable "dev_subnet1_cidr_block" {
+    description = "Please set dev_subnet_1 cidr_block"
+    default = "10.0.10.0/24"
+}
+
+variable "dev_subnet2_cidr_block" {
+    description = "Please set dev_subnet_2 cidr_block"
+    default = "10.0.20.0/24"
+}
+
 variable "instance_type" {
     description = "Please set instance type"
     default = "t2.micro"
