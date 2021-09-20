@@ -1,12 +1,12 @@
 #---------------------------------------------------------------
 # Creating Dev infrustructure in any Region Default VPC
 # Create:
-#   - Security Group for Servers
-#   - Launch ec2 instances
-#   - 
+#   - VPC
+#   - Subnets
+#   - Securuty Group
 #   - 
 # 
-# Made by Serhii Skliarov 13-September-2021
+# Made by Serhii Skliarov 20-September-2021
 #------------------------------------------------------------
 
 provider "aws" {
@@ -183,3 +183,5 @@ resource "aws_security_group" "default-security-gp" {
 
     tags = merge(var.common_tag, {Name = "Defaul Security Group"})
 }
+
+

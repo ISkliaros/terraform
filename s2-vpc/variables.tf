@@ -5,7 +5,7 @@ variable "region" {
 
 variable "vpc_name" {
     description = "VPC Name"
-    default = "Development"
+    default = "Develoyment"
 }
 
 variable "vpc_cidr_block" {
@@ -34,7 +34,7 @@ variable "count_instances" {
 
 variable "key_name" {
     description = "Please set key name"
-    default = "skl_rsa"
+    default = "id_rsa"
 }
 
 variable "allow_ports" {
