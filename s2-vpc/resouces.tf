@@ -1,9 +1,9 @@
 #---------------------------------------------------------------
 # Creating Dev infrustructure in any Region Default VPC
 # Create:
-#   - Security Group for Servers
+#   - Search AMI
 #   - Launch ec2 instances
-#   - 
+#   - Add key pairs
 #   - 
 # 
 # Made by Serhii Skliarov 20-September-2021
@@ -47,7 +47,8 @@ resource "aws_instance" "amazon_linux_jenkins" {
   user_data = "${file("install_slave.sh")}"
   tags = merge(var.common_tag, {Name = "${var.common_tag["Environment"]} Jenkins server"})
 }
-resource "aws_instance" "amazon_linux_slave" {
+
+/* resource "aws_instance" "amazon_linux_slave" {
   ami = data.aws_ami.latest_amazon_linux.id
   instance_type = var.instance_type
   vpc_security_group_ids = [aws_security_group.dynamic_secgroup.id]
@@ -56,6 +57,6 @@ resource "aws_instance" "amazon_linux_slave" {
   monitoring = var.enable_dital_monitoring
   user_data = "${file("install_slave.sh")}"
   tags = merge(var.common_tag, {Name = "${var.common_tag["Environment"]} Jenkins slave/node"})
-}
+} */
 
 #------------------------------------------------------------
