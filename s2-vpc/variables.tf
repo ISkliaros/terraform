@@ -23,6 +23,11 @@ variable "dev_subnet2_cidr_block" {
     default = "10.0.20.0/24"
 }
 
+variable "dev_subnet3_cidr_block" {
+    description = "Please set dev_subnet_2 cidr_block"
+    default = "10.0.30.0/24"
+}
+
 variable "instance_type" {
     description = "Please set instance type"
     default = "t2.micro"

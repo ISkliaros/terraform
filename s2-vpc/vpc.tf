@@ -13,7 +13,13 @@ provider "aws" {
   region = var.region 
 }
 
-#------------------Data sources------------------------------
+#------------------Key pair ---------------------------------
+resource "aws_key_pair" "deployer" {
+  key_name   = "id_rsa"
+  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC3hHnCryj4aVbiRspBTMTVR8D9trreJF3uK0cmIW1Fcas0Zb+WOb4IBaHcBMbQWw5c8Rsl3kc5cz/sASrwrDzZ18grloMjGkp7qqfMbYB02ZZCFelh4O0nMoi2B2XlT4QjsC92BfAFnxxrzDzcHAIpdXYYwiPl99T4DpykNdc5aRFqjYnsk/bONiv08hh0GsP8qjl0l+RyDu2s71pFOHIcO9idqdqF6ZjkkwqTgmsPjIrvHc+zJ+AnraDPOho/XUH617PdThspWSQBMu4EuMxxJTRPgSomHMIYCCxLmAeW1RmSTow0DRLgUS6E3nkx18DKmtdR2t2QGZq4CFnKrjvp4Crj7I/B7i2F8gVgihvehsQFAi1sL53Fc+0d4lRrAYtPXocLLX6y8rusgVEloySCrlFhIU4oui8ZaIIWwny9r7grssfTTZqacXSIKV7ou5Mq5jdVgNKGNN0Hk77r1VUly1OmNI29YOooYxx+TT0yIdkaDrrolVkBF8ulfUOzhAGZsgsxMhGmaMpaMNJSC4qLW3CV4gOLhIHwt2kamywTMOny4VYTacpIAQvOH74GN829pNHx7FNn+rg0ql76u/xTh6tE/3oWH34lLrTNBNsJaIP7UaIoTjwSAjJRiRCmaI3JisZlBWgx0EWq/BmQ4EomwKkFHR4Yc1+JOJVzT6hSoQ=="
+}
+
+#----------------- Data sources -----------------------------
 data "aws_region" "current" {}
 data "aws_caller_identity" "current" {}
 data "aws_availability_zones" "working" {}
@@ -64,7 +70,19 @@ resource "aws_subnet" "dev_public_b" {
   tags = {
     "Name" = "Public-B env:  ${var.vpc_name}"
     "Account" = "Subnet Account ID: ${data.aws_caller_identity.current.user_id}"
-    "Region" = "${data.aws_availability_zones.working.names[0]}"
+    "Region" = "${data.aws_availability_zones.working.names[1]}"
+  }
+}
+
+resource "aws_subnet" "dev_public_c" {
+  vpc_id = aws_vpc.dev_vpc.id
+  availability_zone = data.aws_availability_zones.working.names[2]
+  cidr_block = var.dev_subnet3_cidr_block
+  map_public_ip_on_launch = "true"
+  tags = {
+    "Name" = "Public-C env:  ${var.vpc_name}"
+    "Account" = "Subnet Account ID: ${data.aws_caller_identity.current.user_id}"
+    "Region" = "${data.aws_availability_zones.working.names[2]}"
   }
 }
 
